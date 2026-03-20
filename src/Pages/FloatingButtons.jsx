@@ -12,8 +12,8 @@ const FloatingButtons = () => {
 
   return (
     <>
-      {/* CENTER BUTTONS */}
-      <div className="fixed right-0 top-1/3 -translate-y-1/2 z-50 flex flex-col">
+      {/* CENTER BUTTONS (HIDDEN ON MOBILE) */}
+      <div className="hidden sm:flex fixed right-0 top-1/2 -translate-y-1/2 z-50 flex-col">
 
         {/* DEMOS */}
         <div className="bg-white shadow-md w-14 h-14 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 border-b">
@@ -29,10 +29,10 @@ const FloatingButtons = () => {
 
       </div>
 
-      {/* BOTTOM ARROW */}
+      {/* ARROW (HIDDEN ON MOBILE) */}
       <div
         onClick={scrollToTop}
-        className="fixed right-0 bottom-5 z-50 bg-gray-800 text-white w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-black transition mr-1"
+        className="hidden sm:flex fixed right-0 bottom-5 z-50 bg-gray-800 text-white w-10 h-10 items-center justify-center cursor-pointer hover:bg-black transition"
       >
         <FaChevronUp />
       </div>

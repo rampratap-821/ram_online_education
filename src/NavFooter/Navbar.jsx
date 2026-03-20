@@ -143,16 +143,8 @@ const Navbar = () => {
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.top = `-${window.scrollY}px`;
     } else {
-      const scrollY = document.body.style.top;
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
     }
   }, [mobileMenuOpen]);
 
@@ -291,7 +283,7 @@ const Navbar = () => {
         </div>
 
         {/* Navbar */}
-        <nav className="bg-white py-4 px-4 md:px-10 border-b shadow-md">
+        <nav className="bg-white py-4 px-4 md:px-10 border-b shadow-md relative">
           <div className="flex items-center justify-between max-w-7xl mx-auto">
             {/* Logo with smooth hover */}
             <Link
@@ -688,253 +680,258 @@ const Navbar = () => {
               )}
             </div>
           )}
+        </nav>
+      </div>
 
-          {/* Mobile Sidebar - Same as before */}
-          <div
-            className={`lg:hidden fixed inset-0 z-50 transition-opacity duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-              }`}
-            style={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          >
-            {/* Overlay */}
-            <div
-              className={`absolute inset-0 bg-black transition-opacity duration-500 ${mobileMenuOpen ? 'opacity-50' : 'opacity-0'
-                }`}
-              onClick={closeMobileMenu}
+      {/* Mobile Sidebar - Moved OUTSIDE the fixed navbar container */}
+      <div
+        className={`lg:hidden fixed inset-0 z-[60] transition-opacity duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
+          }`}
+      >
+        {/* Overlay */}
+        <div
+          className={`absolute inset-0 bg-black transition-opacity duration-500 ${mobileMenuOpen ? 'opacity-50' : 'opacity-0'
+            }`}
+          onClick={closeMobileMenu}
+        />
+
+        {/* Sidebar */}
+        <div
+          className={`absolute top-0 right-0 h-full w-[300px] sm:w-[350px] bg-white shadow-2xl transform transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+          style={{
+            boxShadow: mobileMenuOpen ? '-10px 0 30px rgba(0,0,0,0.2)' : 'none'
+          }}
+        >
+          {/* Sidebar Header - Fixed */}
+          <div className="sticky top-0 bg-white border-b p-4 flex justify-between items-center z-10">
+            <img
+              src={EdumaLogo}
+              className="w-[120px] h-6 object-contain cursor-pointer"
+              alt="Eduma"
+              onClick={() => handleNavigation('/')}
             />
-
-            {/* Sidebar */}
-            <div
-              className={`absolute top-0 right-0 h-full w-[300px] sm:w-[350px] bg-white shadow-2xl transform transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-                }`}
-              style={{
-                boxShadow: mobileMenuOpen ? '-10px 0 30px rgba(0,0,0,0.2)' : 'none'
-              }}
+            <button
+              onClick={closeMobileMenu}
+              className="text-gray-600 hover:text-yellow-500 transition-all duration-300 hover:rotate-90"
             >
-              {/* Sidebar Header - Fixed */}
-              <div className="sticky top-0 bg-white border-b p-4 flex justify-between items-center z-10">
-                <img
-                  src={EdumaLogo}
-                  className="w-[120px] h-6 object-contain"
-                  alt="Eduma"
-                  onClick={() => handleNavigation('/')}
-                />
-                <button
-                  onClick={closeMobileMenu}
-                  className="text-gray-600 hover:text-yellow-500 transition-all duration-300 hover:rotate-90"
-                >
-                  <FaTimes size={20} />
-                </button>
+              <FaTimes size={20} />
+            </button>
+          </div>
+
+          {/* Sidebar Content - Scrollable */}
+          <div className="h-[calc(100%-65px)] overflow-y-auto sidebar-scroll">
+            <div className="p-4">
+              {/* Mobile Contact Info */}
+              <div className="mb-6 pb-4 border-b">
+                <div className="text-xs text-gray-600 mb-2">Contact us:</div>
+                <div className="text-sm text-gray-800 mb-1 hover:text-yellow-500 transition-colors cursor-pointer">(+88) 1990 6886</div>
+                <div className="text-sm text-gray-800 mb-3 hover:text-yellow-500 transition-colors cursor-pointer">ram@thimpress.com</div>
+                <div className="flex gap-4 text-sm">
+                  <button onClick={() => {
+                    setOpen(true);
+                    closeMobileMenu();
+                  }} className="text-gray-800 cursor-pointer hover:text-yellow-500 transition-colors">Register</button>
+                  <span className="text-gray-800">/</span>
+                  <button onClick={() => {
+                    setOpen2(true);
+                    closeMobileMenu();
+                  }} className="text-gray-800 cursor-pointer hover:text-yellow-500 transition-colors">Login</button>
+                </div>
               </div>
 
-              {/* Sidebar Content - Scrollable */}
-              <div className="h-[calc(100%-65px)] overflow-y-auto sidebar-scroll">
-                <div className="p-4">
-                  {/* Mobile Contact Info */}
-                  <div className="mb-6 pb-4 border-b">
-                    <div className="text-xs text-gray-600 mb-2">Contact us:</div>
-                    <div className="text-sm text-gray-800 mb-1 hover:text-yellow-500 transition-colors">(+88) 1990 6886</div>
-                    <div className="text-sm text-gray-800 mb-3 hover:text-yellow-500 transition-colors">ram@thimpress.com</div>
-                    <div className="flex gap-4 text-sm">
-                      <span className="text-gray-800 cursor-pointer hover:text-yellow-500 transition-colors">Register</span>
-                      <span className="text-gray-800">/</span>
-                      <span className="text-gray-800 cursor-pointer hover:text-yellow-500 transition-colors">Login</span>
-                    </div>
-                  </div>
-
-                  {/* Sidebar Menu Items */}
-                  <div className="space-y-1">
-                    {/* DEMOS */}
-                    <div className="border-b border-gray-100 py-2">
-                      <button
-                        onClick={() => setMobileDropdown(mobileDropdown === 'demos' ? null : 'demos')}
-                        className="w-full flex items-center justify-between text-gray-900 font-semibold text-sm py-2 hover:text-yellow-500 transition-all duration-300"
-                      >
-                        <span>DEMOS</span>
-                        <svg className={`w-3 h-3 transition-all duration-500 ${mobileDropdown === 'demos' ? 'rotate-180' : ''
-                          }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      <div className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileDropdown === 'demos' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-                        }`}>
-                        <div className="pl-4 py-2 space-y-3">
-                          <div>
-                            <h4 className="text-xs font-bold text-yellow-500 mb-2">POPULAR</h4>
-                            <ul className="space-y-2">
-                              <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">Main Demo</li>
-                              <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">Classic Eduma</li>
-                              <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">Online Learning</li>
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className="text-xs font-bold text-yellow-500 mb-2">UNIVERSITY</h4>
-                            <ul className="space-y-2">
-                              <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">University New</li>
-                              <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">Ivy League</li>
-                            </ul>
-                          </div>
-                        </div>
+              {/* Sidebar Menu Items */}
+              <div className="space-y-1">
+                {/* DEMOS */}
+                <div className="border-b border-gray-100 py-2">
+                  <button
+                    onClick={() => setMobileDropdown(mobileDropdown === 'demos' ? null : 'demos')}
+                    className="w-full flex items-center justify-between text-gray-900 font-semibold text-sm py-2 hover:text-yellow-500 transition-all duration-300"
+                  >
+                    <span>DEMOS</span>
+                    <svg className={`w-3 h-3 transition-all duration-500 ${mobileDropdown === 'demos' ? 'rotate-180' : ''
+                      }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileDropdown === 'demos' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}>
+                    <div className="pl-4 py-2 space-y-3">
+                      <div>
+                        <h4 className="text-xs font-bold text-yellow-500 mb-2">POPULAR</h4>
+                        <ul className="space-y-2">
+                          <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">Main Demo</li>
+                          <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">Classic Eduma</li>
+                          <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">Online Learning</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-yellow-500 mb-2">UNIVERSITY</h4>
+                        <ul className="space-y-2">
+                          <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">University New</li>
+                          <li className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer">Ivy League</li>
+                        </ul>
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    {/* COURSES */}
-                    <div className="border-b border-gray-100 py-2">
-                      <button
-                        onClick={() => setMobileDropdown(mobileDropdown === 'courses' ? null : 'courses')}
-                        className="w-full flex items-center justify-between text-gray-900 font-semibold text-sm py-2 hover:text-yellow-500 transition-all duration-300"
+                {/* COURSES */}
+                <div className="border-b border-gray-100 py-2">
+                  <button
+                    onClick={() => setMobileDropdown(mobileDropdown === 'courses' ? null : 'courses')}
+                    className="w-full flex items-center justify-between text-gray-900 font-semibold text-sm py-2 hover:text-yellow-500 transition-all duration-300"
+                  >
+                    <span>COURSES</span>
+                    <svg className={`w-3 h-3 transition-all duration-500 ${mobileDropdown === 'courses' ? 'rotate-180' : ''
+                      }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileDropdown === 'courses' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}>
+                    <div className="pl-4 py-2 space-y-3">
+                      <div
+                        className="text-yellow-500 text-xs font-semibold cursor-pointer hover:translate-x-2 transition-all duration-300"
+                        onClick={() => handleNavigation('/courses')}
                       >
-                        <span>COURSES</span>
-                        <svg className={`w-3 h-3 transition-all duration-500 ${mobileDropdown === 'courses' ? 'rotate-180' : ''
-                          }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      <div className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileDropdown === 'courses' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-                        }`}>
-                        <div className="pl-4 py-2 space-y-3">
+                        FEATURED COURSES
+                      </div>
+                      <div
+                        className="text-gray-700 text-xs hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                        onClick={() => handleNavigation('/courses')}
+                      >
+                        COURSE LAYOUTS
+                      </div>
+                      <div
+                        className="flex items-center gap-1 text-xs hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                        onClick={() => handleNavigation('/courses')}
+                      >
+                        <span>COLLECTIONS</span>
+                        <span className="text-[8px] bg-red-100 text-red-500 px-1 rounded">HOT</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 mt-2">
+                        {courseItems.slice(0, 2).map((item, idx) => (
                           <div
-                            className="text-yellow-500 text-xs font-semibold cursor-pointer hover:translate-x-2 transition-all duration-300"
+                            key={idx}
+                            className="group cursor-pointer"
                             onClick={() => handleNavigation('/courses')}
                           >
-                            FEATURED COURSES
+                            <div className="overflow-hidden rounded">
+                              <img src={item.image} className="w-full h-16 object-cover group-hover:scale-110 transition-all duration-700" alt="" />
+                            </div>
+                            <p className="text-[10px] mt-1 group-hover:text-yellow-500 group-hover:translate-x-1 transition-all duration-300">{item.title.substring(0, 25)}...</p>
                           </div>
-                          <div
-                            className="text-gray-700 text-xs hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                            onClick={() => handleNavigation('/courses')}
-                          >
-                            COURSE LAYOUTS
-                          </div>
-                          <div
-                            className="flex items-center gap-1 text-xs hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                            onClick={() => handleNavigation('/courses')}
-                          >
-                            <span>COLLECTIONS</span>
-                            <span className="text-[8px] bg-red-100 text-red-500 px-1 rounded">HOT</span>
-                          </div>
-                          <div className="grid grid-cols-2 gap-2 mt-2">
-                            {courseItems.slice(0, 2).map((item, idx) => (
-                              <div
-                                key={idx}
-                                className="group cursor-pointer"
-                                onClick={() => handleNavigation('/courses')}
-                              >
-                                <div className="overflow-hidden rounded">
-                                  <img src={item.image} className="w-full h-16 object-cover group-hover:scale-110 transition-all duration-700" />
-                                </div>
-                                <p className="text-[10px] mt-1 group-hover:text-yellow-500 group-hover:translate-x-1 transition-all duration-300">{item.title.substring(0, 25)}...</p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
+                        ))}
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    {/* PAGES */}
-                    <div className="border-b border-gray-100 py-2">
-                      <button
-                        onClick={() => setMobileDropdown(mobileDropdown === 'pages' ? null : 'pages')}
-                        className="w-full flex items-center justify-between text-gray-900 font-semibold text-sm py-2 hover:text-yellow-500 transition-all duration-300"
-                      >
-                        <span>PAGES</span>
-                        <svg className={`w-3 h-3 transition-all duration-500 ${mobileDropdown === 'pages' ? 'rotate-180' : ''
-                          }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      <div className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileDropdown === 'pages' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-                        }`}>
-                        <div className="pl-4 py-2 space-y-3">
-                          <div>
-                            <h4 className="text-xs font-bold text-yellow-500 mb-2">ABOUT</h4>
-                            <ul className="space-y-2">
-                              <li
-                                className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                                onClick={() => handleNavigation('/about')}
-                              >
-                                About us
-                              </li>
-                              <li
-                                className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                                onClick={() => handleNavigation('/gallery')}
-                              >
-                                Gallery
-                              </li>
-                              <li
-                                className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                                onClick={() => handleNavigation('/events')}
-                              >
-                                Events
-                              </li>
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className="text-xs font-bold text-yellow-500 mb-2">PRICING</h4>
-                            <ul className="space-y-2">
-                              <li
-                                className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                                onClick={() => handleNavigation('/membership')}
-                              >
-                                Membership
-                              </li>
-                              <li
-                                className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                                onClick={() => handleNavigation('/pricing')}
-                              >
-                                Pricing plan
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
+                {/* PAGES */}
+                <div className="border-b border-gray-100 py-2">
+                  <button
+                    onClick={() => setMobileDropdown(mobileDropdown === 'pages' ? null : 'pages')}
+                    className="w-full flex items-center justify-between text-gray-900 font-semibold text-sm py-2 hover:text-yellow-500 transition-all duration-300"
+                  >
+                    <span>PAGES</span>
+                    <svg className={`w-3 h-3 transition-all duration-500 ${mobileDropdown === 'pages' ? 'rotate-180' : ''
+                      }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${mobileDropdown === 'pages' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}>
+                    <div className="pl-4 py-2 space-y-3">
+                      <div>
+                        <h4 className="text-xs font-bold text-yellow-500 mb-2">ABOUT</h4>
+                        <ul className="space-y-2">
+                          <li
+                            className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                            onClick={() => handleNavigation('/about')}
+                          >
+                            About us
+                          </li>
+                          <li
+                            className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                            onClick={() => handleNavigation('/gallery')}
+                          >
+                            Gallery
+                          </li>
+                          <li
+                            className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                            onClick={() => handleNavigation('/events')}
+                          >
+                            Events
+                          </li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-yellow-500 mb-2">PRICING</h4>
+                        <ul className="space-y-2">
+                          <li
+                            className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                            onClick={() => handleNavigation('/membership')}
+                          >
+                            Membership
+                          </li>
+                          <li
+                            className="text-xs text-gray-600 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                            onClick={() => handleNavigation('/pricing')}
+                          >
+                            Pricing plan
+                          </li>
+                        </ul>
                       </div>
                     </div>
-
-                    {/* Simple Links */}
-                    <div
-                      className="block text-gray-900 font-semibold text-sm py-3 border-b border-gray-100 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                      onClick={() => handleNavigation('/element')}
-                    >
-                      ELEMENTS
-                    </div>
-
-                    <div
-                      className="block text-gray-900 font-semibold text-sm py-3 border-b border-gray-100 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                      onClick={() => handleNavigation('/blog')}
-                    >
-                      BLOG
-                    </div>
-
-                    <div
-                      className="block text-gray-900 font-semibold text-sm py-3 border-b border-gray-100 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
-                      onClick={() => handleNavigation('/backend-demo')}
-                    >
-                      BACKEND DEMO
-                    </div>
                   </div>
+                </div>
 
-                  {/* Search Bar at bottom */}
-                  <div className="mt-6 pt-4 border-t">
-                    <div className="flex items-center bg-gray-100 rounded-lg overflow-hidden">
-                      <input
-                        type="text"
-                        placeholder="Search..."
-                        className="flex-1 px-4 py-2 bg-transparent text-sm outline-none"
-                      />
-                      <button className="px-4 py-2 text-gray-600 hover:text-yellow-500 transition-colors">
-                        <FaSearch />
-                      </button>
-                    </div>
-                  </div>
+                {/* Simple Links */}
+                <div
+                  className="block text-gray-900 font-semibold text-sm py-3 border-b border-gray-100 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                  onClick={() => handleNavigation('/element')}
+                >
+                  ELEMENTS
+                </div>
+
+                <div
+                  className="block text-gray-900 font-semibold text-sm py-3 border-b border-gray-100 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                  onClick={() => handleNavigation('/blog')}
+                >
+                  BLOG
+                </div>
+
+                <div
+                  className="block text-gray-900 font-semibold text-sm py-3 border-b border-gray-100 hover:text-yellow-500 hover:translate-x-2 transition-all duration-300 cursor-pointer"
+                  onClick={() => handleNavigation('/backend-demo')}
+                >
+                  BACKEND DEMO
+                </div>
+              </div>
+
+              {/* Search Bar at bottom */}
+              <div className="mt-6 pt-4 border-t">
+                <div className="flex items-center bg-gray-100 rounded-lg overflow-hidden">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    className="flex-1 px-4 py-2 bg-transparent text-sm outline-none"
+                  />
+                  <button className="px-4 py-2 text-gray-600 hover:text-yellow-500 transition-colors">
+                    <FaSearch />
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-        </nav>
+        </div>
       </div>
 
       {/* Dynamic spacer that adjusts to navbar height */}
       <div style={{ height: `${navbarHeight}px` }}></div>
-       <Register isOpen={open} onClose={() => setOpen(false)} />
-        <Login isOpen={open2} onClose={() => setOpen2(false)}/>
+      <Register isOpen={open} onClose={() => setOpen(false)} />
+      <Login isOpen={open2} onClose={() => setOpen2(false)} />
     </>
   );
 };
